@@ -12,7 +12,7 @@ import './App.css';
 import { FirebaseAuthProvider, useFirebaseAuth } from './hooks/useFirebaseAuth';
 
 // Import components
-import PASLandingPage from './components/PASLandingPage';
+import PASLandingPage from './components/PASLandingPageTailwind';
 import LandingPage from './components/LandingPage';
 import ModernDashboard from './components/ModernDashboard';
 import CollectionForm from './components/CollectionForm';

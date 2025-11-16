@@ -93,15 +93,16 @@
   html {
     /* Ensure proper viewport handling */
     scroll-behavior: smooth;
+    overflow-y: auto;
   }
   body {
     @apply bg-background text-foreground;
     /* Prevent body scroll when sidebar is open on mobile */
     overflow-x: hidden;
+    overflow-y: auto;
   }
   .App {
     min-height: 100vh;
-    min-height: calc(var(--vh, 1vh) * 100); /* Use CSS custom property for dynamic viewport height */
     width: 100vw;
     max-width: 100%;
     display: flex;

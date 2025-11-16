@@ -17,7 +17,14 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+      },
       colors: {
+        'brand-primary': '#6D28D9',
+        'brand-primary-hover': '#5B21B6',
+        'brand-secondary': '#F5F3FF',
+        'brand-dark': '#1e293b',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

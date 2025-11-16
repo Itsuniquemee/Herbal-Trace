@@ -1,5 +1,5 @@
 import React from 'react';
-import PASLandingPage from './PASLandingPage';
+import PASLandingPage from './PASLandingPageTailwind';
 
 // Simple wrapper for backward compatibility
 const LandingPage = () => {
