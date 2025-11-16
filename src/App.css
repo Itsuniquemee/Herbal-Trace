@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  overflow-y: hidden;
+}
+
+#root {
+  scroll-behavior: smooth;
+}
+
 /* Custom scrollbar styles */
 .custom-scrollbar {
   scrollbar-width: thin;

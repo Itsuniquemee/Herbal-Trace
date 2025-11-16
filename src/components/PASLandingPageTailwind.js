@@ -199,13 +199,13 @@ function PASLandingPageTailwind() {
           {/* Navigation Links (Desktop) */}
           <div className="hidden md:flex md:gap-x-8 lg:gap-x-12">
             {navLinks.map((link) => (
-              <button
+              <a
                 key={link.id}
-                onClick={() => handleNavClick(link.id)}
+                href={`#${link.id}`}
                 className="text-sm font-semibold leading-6 text-gray-700 hover:text-brand-primary"
               >
                 {link.label}
-              </button>
+              </a>
             ))}
           </div>
 
