@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  overflow-y: hidden;
+}
+
 /* Custom scrollbar styles */
 .custom-scrollbar {
   scrollbar-width: thin;

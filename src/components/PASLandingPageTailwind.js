@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/landing.css';
 
 const navLinks = [
@@ -151,6 +152,7 @@ const StarIcon = () => (
 );
 
 function PASLandingPageTailwind() {
+  const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState({});
 
@@ -212,8 +214,8 @@ function PASLandingPageTailwind() {
           {/* Utility & CTA (Desktop) */}
           <div className="hidden md:flex md:items-center md:gap-x-6">
             <button className="text-sm font-semibold leading-6 text-gray-700 hover:text-brand-primary">Dashboard</button>
-            <button className="text-sm font-semibold leading-6 text-gray-700 hover:text-brand-primary">Log In</button>
-            <button className="rounded-full bg-brand-primary px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-primary-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary">
+            <button onClick={() => navigate('/login')} className="text-sm font-semibold leading-6 text-gray-700 hover:text-brand-primary">Log In</button>
+            <button onClick={() => navigate('/signup')} className="rounded-full bg-brand-primary px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-primary-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary">
               Request a Demo
             </button>
           </div>
@@ -235,8 +237,8 @@ function PASLandingPageTailwind() {
             </div>
             <div className="border-t border-gray-200 py-6 px-2">
               <button className="block w-full text-left rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-700 hover:bg-gray-50 hover:text-brand-primary">Dashboard</button>
-              <button className="block w-full text-left rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-700 hover:bg-gray-50 hover:text-brand-primary">Log In</button>
-              <button className="mt-2 block w-full rounded-full bg-brand-primary px-4 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-brand-primary-hover">
+              <button onClick={() => navigate('/login')} className="block w-full text-left rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-700 hover:bg-gray-50 hover:text-brand-primary">Log In</button>
+              <button onClick={() => navigate('/signup')} className="mt-2 block w-full rounded-full bg-brand-primary px-4 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-brand-primary-hover">
                 Request a Demo
               </button>
             </div>
@@ -263,7 +265,7 @@ function PASLandingPageTailwind() {
               Our blockchain platform ensures the quality, authenticity, and sustainability of every herb.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-y-4 sm:flex-row sm:gap-x-6 sm:gap-y-0">
-              <button className="rounded-full bg-brand-primary px-8 py-3 text-lg font-semibold text-white shadow-lg hover:bg-brand-primary-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary transition-all">
+              <button onClick={() => navigate('/signup')} className="rounded-full bg-brand-primary px-8 py-3 text-lg font-semibold text-white shadow-lg hover:bg-brand-primary-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary transition-all">
                 Request a Demo
               </button>
               <button className="text-lg font-semibold leading-6 text-white hover:underline drop-shadow">
