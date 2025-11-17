@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/landing.css';
 
 const navLinks = [
@@ -153,13 +154,32 @@ const StarIcon = () => (
 function PASLandingPageTailwind() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState({});
+  const [isScrolled, setIsScrolled] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === 'Escape') setMobileMenuOpen(false);
     };
+    
+    const handleScroll = () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const shouldShowBg = scrollTop > 20;
+
+      setIsScrolled(shouldShowBg);
+    };
+    
+    // Add event listeners
     document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // Call handleScroll once to set initial state
+    handleScroll();
+    
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   const handleNavClick = (id) => {
@@ -181,14 +201,28 @@ function PASLandingPageTailwind() {
   return (
     <div className="font-sans antialiased text-gray-800">
       {/* Header */}
-      <header className="sticky top-0 z-50 w-full bg-white shadow-sm">
-        <nav className="container mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8">
-          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-2xl font-bold text-brand-dark">Herbal Trace</button>
+      <header className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ease-in-out ${
+        isScrolled 
+          ? 'bg-black/20 backdrop-blur-md' 
+          : 'bg-transparent'
+      }`}>
+        <nav className="container mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-sm">HT</span>
+            </div>
+            <button 
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} 
+              className="text-xl font-bold text-white transition-all duration-300"
+            >
+              Herbal Trace
+            </button>
+          </div>
 
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden rounded-lg p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-primary"
+            className="md:hidden rounded-lg p-2 text-white/90 hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white/30 transition-colors duration-200"
           >
             <span className="sr-only">Open main menu</span>
             <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
@@ -197,12 +231,12 @@ function PASLandingPageTailwind() {
           </button>
 
           {/* Navigation Links (Desktop) */}
-          <div className="hidden md:flex md:gap-x-8 lg:gap-x-12">
+          <div className="hidden md:flex md:gap-x-8">
             {navLinks.map((link) => (
               <a
                 key={link.id}
                 href={`#${link.id}`}
-                className="text-sm font-semibold leading-6 text-gray-700 hover:text-brand-primary"
+                className="text-sm font-semibold text-white/90 hover:text-white transition-all duration-300"
               >
                 {link.label}
               </a>
@@ -210,34 +244,54 @@ function PASLandingPageTailwind() {
           </div>
 
           {/* Utility & CTA (Desktop) */}
-          <div className="hidden md:flex md:items-center md:gap-x-6">
-            <button className="text-sm font-semibold leading-6 text-gray-700 hover:text-brand-primary">Dashboard</button>
-            <button className="text-sm font-semibold leading-6 text-gray-700 hover:text-brand-primary">Log In</button>
-            <button className="rounded-full bg-brand-primary px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-primary-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary">
-              Request a Demo
+          <div className="hidden md:flex md:items-center md:gap-x-4">
+            <button 
+              onClick={() => navigate('/login')}
+              className="text-sm font-semibold text-white/90 hover:text-white transition-all duration-300"
+            >
+              Log In
+            </button>
+            <button 
+              onClick={() => navigate('/signup')}
+              className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-sm hover:shadow-md"
+            >
+              Try Herbal Trace for Free
             </button>
           </div>
         </nav>
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden">
-            <div className="space-y-1 px-2 pb-3 pt-2">
+          <div className="md:hidden bg-white/95 backdrop-blur-md border-t border-white/20">
+            <div className="space-y-1 px-4 pb-3 pt-4">
               {navLinks.map((link) => (
                 <button
                   key={link.id}
                   onClick={() => handleNavClick(link.id)}
-                  className="block w-full text-left rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-700 hover:bg-gray-50 hover:text-brand-primary"
+                  className="block w-full text-left rounded-lg px-3 py-2 text-base font-bold leading-7 text-gray-700 hover:bg-gray-50 hover:text-brand-primary"
                 >
                   {link.label}
                 </button>
               ))}
             </div>
-            <div className="border-t border-gray-200 py-6 px-2">
-              <button className="block w-full text-left rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-700 hover:bg-gray-50 hover:text-brand-primary">Dashboard</button>
-              <button className="block w-full text-left rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-700 hover:bg-gray-50 hover:text-brand-primary">Log In</button>
-              <button className="mt-2 block w-full rounded-full bg-brand-primary px-4 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-brand-primary-hover">
-                Request a Demo
+            <div className="border-t border-gray-200 py-6 px-4">
+              <button 
+                onClick={() => {
+                  navigate('/login');
+                  setMobileMenuOpen(false);
+                }}
+                className="block w-full text-left rounded-lg px-4 py-3 text-base font-semibold text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors"
+              >
+                Log In
+              </button>
+              <button 
+                onClick={() => {
+                  navigate('/signup');
+                  setMobileMenuOpen(false);
+                }}
+                className="mt-3 block w-full rounded-full bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-3 text-center text-base font-semibold text-white hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-sm"
+              >
+                Try Herbal Trace for Free
               </button>
             </div>
           </div>
@@ -246,39 +300,52 @@ function PASLandingPageTailwind() {
 
       <main className="w-full">
         {/* Hero Section */}
-        <section className="relative flex h-[70vh] min-h-[500px] w-full items-center justify-center overflow-hidden md:h-[90vh]">
+        <section className="relative flex h-screen w-full items-center justify-center overflow-hidden">
           <img
-            src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2000&q=80"
-            alt="Serene mountain landscape"
+            src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=2400&q=80"
+            alt="Serene forest landscape with mountains"
             className="absolute inset-0 h-full w-full object-cover"
-            style={{ objectPosition: 'center 40%' }}
+            style={{ objectPosition: 'center center' }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-white/20 to-white/40"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/40"></div>
 
-          <div className="relative z-10 text-center px-4 max-w-5xl">
-            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl drop-shadow-lg">
-              Authentic Ayurveda. Verified from Source to Shelf.
+          <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
+            <h1 className="text-6xl font-bold tracking-tight text-white sm:text-8xl mb-8 leading-none">
+              Trace your herbs.
+              <br />
+              Trust your source.
             </h1>
-            <p className="mt-6 text-lg leading-8 text-white drop-shadow-md">
-              Our blockchain platform ensures the quality, authenticity, and sustainability of every herb.
+            <p className="text-2xl leading-relaxed text-white/90 max-w-3xl mx-auto mb-16 font-light">
+              The #1 platform for herbal traceability and authenticity
             </p>
-            <div className="mt-10 flex flex-col items-center justify-center gap-y-4 sm:flex-row sm:gap-x-6 sm:gap-y-0">
-              <button className="rounded-full bg-brand-primary px-8 py-3 text-lg font-semibold text-white shadow-lg hover:bg-brand-primary-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary transition-all">
-                Request a Demo
+            <div className="flex flex-col items-center justify-center gap-6 sm:flex-row">
+              <button 
+                onClick={() => navigate('/signup')}
+                className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-10 py-5 rounded-full text-xl font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-xl hover:shadow-2xl min-w-[280px]"
+              >
+                Try Herbal Trace for Free
               </button>
-              <button className="text-lg font-semibold leading-6 text-white hover:underline drop-shadow">
-                Track Your Product
+              <button 
+                onClick={() => navigate('/login')}
+                className="bg-white/5 backdrop-blur-sm text-white px-10 py-5 rounded-full text-xl font-medium hover:bg-white/10 transition-all duration-200 border border-white/30 min-w-[280px]"
+              >
+                Already have an account?
               </button>
             </div>
           </div>
         </section>
 
         {/* Features Section */}
-        <section id="solution" className="py-16 sm:py-24">
+        <section id="solution" className="py-20 bg-white">
           <div className="container mx-auto max-w-7xl px-6 lg:px-8">
-            <h2 className="text-center text-3xl font-bold tracking-tight text-brand-dark sm:text-4xl">
-              A Transparent, Immutable Supply Chain
-            </h2>
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl mb-4">
+                Why choose Herbal Trace?
+              </h2>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                A transparent, immutable supply chain that builds trust
+              </p>
+            </div>
             <div className="mt-16 grid grid-cols-1 gap-12 md:grid-cols-3">
               {features.map((feature) => (
                 <div key={feature.title} className="text-center">
@@ -329,7 +396,7 @@ function PASLandingPageTailwind() {
                     {testimonial.quote}
                   </blockquote>
                   <div className="mt-6 flex items-center space-x-1">
-                    {[...new Array(5)].map((_, i) => (
+                    {Array.from({ length: 5 }, (_, i) => (
                       <StarIcon key={`star-${testimonial.name}-${i}`} />
                     ))}
                   </div>
@@ -341,24 +408,26 @@ function PASLandingPageTailwind() {
         </section>
 
         {/* CTA Section */}
-        <section id="consumers" className="relative flex h-[70vh] min-h-[500px] w-full items-center justify-center bg-gray-400 bg-cover bg-center">
-          <img
-            src="https://placehold.co/1920x500/3B82F6/ffffff?text=Secure+Data+Flow"
-            alt="Secure blockchain network"
-            className="absolute inset-0 h-full w-full object-cover -z-10"
-          />
-          <div className="absolute inset-0 bg-black/50"></div>
-
-          <div className="relative z-10 w-full max-w-3xl text-center text-white px-4">
-            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Secure Your Supply Chain. Build Consumer Trust.
+        <section id="consumers" className="relative py-24 bg-gradient-to-b from-gray-50 to-white">
+          <div className="container mx-auto max-w-4xl text-center px-6">
+            <h2 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl mb-6">
+              Ready to secure your supply chain?
             </h2>
-            <p className="mt-6 text-lg leading-8 text-gray-100">
-              See how Herbal Trace can bring unparalleled transparency to your brand. Schedule a personalized demo with our team today.
+            <p className="text-xl leading-relaxed text-gray-600 mb-12 max-w-2xl mx-auto">
+              Join thousands of brands building consumer trust through transparency. Start your journey today.
             </p>
-            <div className="mt-10">
-              <button className="rounded-full bg-brand-primary px-8 py-3 text-lg font-semibold text-white shadow-sm hover:bg-brand-primary-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary">
-                Request a Demo
+            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
+              <button 
+                onClick={() => navigate('/signup')}
+                className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-8 py-4 rounded-full text-lg font-medium hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl min-w-[200px]"
+              >
+                Get Started Free
+              </button>
+              <button 
+                onClick={() => navigate('/login')}
+                className="text-gray-600 hover:text-gray-900 text-lg font-medium transition-colors duration-200"
+              >
+                Already have an account?
               </button>
             </div>
           </div>
@@ -448,16 +517,16 @@ function PASLandingPageTailwind() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-gray-300">
+      <footer className="bg-gray-50 border-t border-gray-200">
         <div className="container mx-auto max-w-7xl px-6 py-16 lg:px-8">
           <div className="grid grid-cols-2 gap-12 md:grid-cols-4 lg:grid-cols-5">
             {footerNavGroups.map((group) => (
               <div key={group.title} className="col-span-1">
-                <h4 className="font-semibold text-white">{group.title}</h4>
-                <ul className="mt-4 space-y-3">
+                <h4 className="font-semibold text-gray-900 mb-4">{group.title}</h4>
+                <ul className="space-y-3">
                   {group.links.map((link) => (
                     <li key={link}>
-                      <button className="hover:text-white text-left">{link}</button>
+                      <button className="text-gray-600 hover:text-gray-900 text-left transition-colors duration-200">{link}</button>
                     </li>
                   ))}
                 </ul>
@@ -482,8 +551,8 @@ function PASLandingPageTailwind() {
           </div>
 
           {/* Bottom Bar */}
-          <div className="mt-12 border-t border-gray-700 pt-8">
-            <p className="text-center text-base text-gray-400">&copy; 2025 Herbal Trace. All rights reserved.</p>
+          <div className="mt-12 border-t border-gray-200 pt-8">
+            <p className="text-center text-base text-gray-600">&copy; 2025 Herbal Trace. All rights reserved.</p>
             {/* Social Icons (Mobile) */}
             <div className="mt-6 flex justify-center space-x-6 lg:hidden">
               <button className="text-gray-400 hover:text-white">
