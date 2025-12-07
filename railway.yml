@@ -1,0 +1,33 @@
+services:
+  # PostgreSQL Database
+  - type: database
+    name: herbaltrace-postgres
+    plan: free
+    region: us-west1
+    
+  # Redis Cache  
+  - type: redis
+    name: herbaltrace-redis
+    plan: free
+    region: us-west1
+    
+  # Backend API with Blockchain
+  - type: web
+    name: herbaltrace-backend
+    plan: free
+    region: us-west1
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && node src/server.js
+    healthcheckPath: /api/health
+    envVars:
+      NODE_ENV: production
+      PORT: 3001
+      DATABASE_URL: ${{Postgres.DATABASE_URL}}
+      REDIS_URL: ${{Redis.REDIS_URL}}
+      JWT_SECRET: ${{JWT_SECRET}}
+      JWT_REFRESH_SECRET: ${{JWT_REFRESH_SECRET}}
+      FIREBASE_PROJECT_ID: ${{FIREBASE_PROJECT_ID}}
+      FIREBASE_PRIVATE_KEY: ${{FIREBASE_PRIVATE_KEY}}
+      FIREBASE_CLIENT_EMAIL: ${{FIREBASE_CLIENT_EMAIL}}
+      FABRIC_NETWORK_ENABLED: "false"
+      CORS_ORIGIN: ${{FRONTEND_URL}}

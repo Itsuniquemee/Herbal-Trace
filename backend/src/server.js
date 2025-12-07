@@ -1,3 +1,7 @@
+console.log('🚀 Starting Herbal Trace Backend...');
+console.log('Node version:', process.version);
+console.log('Environment:', process.env.NODE_ENV);
+
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');

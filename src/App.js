@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Box, CircularProgress } from '@mui/material';
-import { ToastContainer } from 'react-toastify';
 import { Toaster } from 'react-hot-toast';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
@@ -13,50 +12,27 @@ import { FirebaseAuthProvider, useFirebaseAuth } from './hooks/useFirebaseAuth';
 
 // Import components
 import PASLandingPage from './components/PASLandingPageTailwind';
-import LandingPage from './components/LandingPage';
-import ModernDashboard from './components/ModernDashboard';
-import CollectionForm from './components/CollectionForm';
-import ConsumerPortal from './components/ConsumerPortal';
 import MainLayout from './components/MainLayout';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import PhoneOTPLogin from './components/PhoneOTPLogin';
-import UserProfile from './components/UserProfile';
-import RecallSimulation from './components/RecallSimulation';
-import AdminPanel from './components/AdminPanel';
-import FileUpload from './components/FileUpload';
-import QRScanner from './components/QRScanner';
 import TraceViewer from './components/TraceViewer';
-import Analytics from './components/Analytics';
-import Reports from './components/Reports';
-import UsersManagement from './components/UsersManagement';
-import Settings from './components/Settings';
 import ProtectedRoute from './components/ProtectedRoute';
 import RoleBasedRedirect from './components/RoleBasedRedirect';
 
+// Import blockchain components
+import BlockchainDashboard from './components/BlockchainDashboard';
+import BlockchainQRScanner from './components/BlockchainQRScanner';
+import BlockchainQRGenerator from './components/BlockchainQRGenerator';
+import EnhancedLogin from './components/EnhancedLogin';
+
 // Import farmer components
 import FarmerCropUpload from './components/farmer/FarmerCropUpload';
-import FarmerHarvestRecords from './components/farmer/FarmerHarvestRecords';
-import FarmerDocuments from './components/farmer/FarmerDocuments';
-import FarmerSupplyTracking from './components/farmer/FarmerSupplyTracking';
-import FarmerQualityFeedback from './components/farmer/FarmerQualityFeedback';
-import FarmerTransparencyCredits from './components/farmer/FarmerTransparencyCredits';
-import FarmerQRGeneration from './components/farmer/FarmerQRGeneration';
 
 // Import processor components
 import ProcessorReceiveBatches from './components/processor/ProcessorReceiveBatches';
-import ProcessorRecords from './components/processor/ProcessorRecords';
-import ProcessorQualityTests from './components/processor/ProcessorQualityTests';
-import ProcessorQRGeneration from './components/processor/ProcessorQRGeneration';
-import ProcessorChainOfCustody from './components/processor/ProcessorChainOfCustody';
 
 // Import admin components
-import AdminUserManagement from './components/AdminUserManagement';
-import AdminAnalyticsDashboard from './components/AdminAnalyticsDashboard';
-import AdminAIPredictions from './components/AdminAIPredictions';
-import AdminSystemControl from './components/AdminSystemControl';
-import AdminSecurityMonitoring from './components/AdminSecurityMonitoring';
-import AdminIntegrationHub from './components/AdminIntegrationHub';
 import AdminPendingApprovals from './components/AdminPendingApprovals';
 
 // Create a theme
@@ -130,6 +106,7 @@ const AppContent = () => {
       
       {/* Login and Signup routes - no layout */}
       <Route path="/login" element={<Login />} />
+      <Route path="/enhanced-login" element={<EnhancedLogin />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/phone-login" element={<PhoneOTPLogin />} />
       
@@ -150,7 +127,9 @@ const AppContent = () => {
             onPageChange={handlePageChange}
           >
             <Routes>
-              <Route path="main-dashboard" element={<ModernDashboard />} />
+              {/* Blockchain Dashboard - Enhanced main dashboard */}
+              <Route path="main-dashboard" element={<BlockchainDashboard />} />
+              <Route path="blockchain-dashboard" element={<BlockchainDashboard />} />
               
               {/* Farmer routes */}
               <Route path="farmer/crop-upload" element={
@@ -174,7 +153,8 @@ const AppContent = () => {
               } />
               
               {/* Common routes */}
-              <Route path="qr-scanner" element={<QRScanner />} />
+              <Route path="qr-scanner" element={<BlockchainQRScanner />} />
+              <Route path="qr-generator" element={<BlockchainQRGenerator />} />
               <Route path="trace-viewer/:traceId?" element={<TraceViewer />} />
               
               {/* Catch-all route for app section */}
